@@ -11,9 +11,9 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.104 Safari/537.36 Core/1.53.1708.400 QQBrowser/9.5.9635.400'
 }
 
-sharecode = ''
-startyear = ''
-endyear = ''
+sharecode = 0
+startyear = 0
+endyear = 0
 
 try: 
     opts, args = getopt.getopt(sys.argv[1:],"hc:s:e:")
@@ -57,33 +57,34 @@ def sharesCrawl(shareCode,year,season):
 #sharesCrawl(601857, 2015, 2)
 
 def writeCSV(shareCode,beginYear,endYear):
-    print shareCode,beginYear,endYear
+    beginYear = int(beginYear)
+    endYear = int (endYear)
     shareCodeStr = str(shareCode)
 
     csvFile = open('/home/ubuntu/Jianing/stock/' + shareCodeStr + '.csv', 'wb')
     writer = csv.writer(csvFile)
     writer.writerow(('日期','开盘价','最高价','最低价','收盘价','涨跌额','涨跌幅','成交量','成交金额','振幅','换手率'))
-    try:
-        for i in range(beginYear, endYear + 1):
-            print 1
-            print str(i) + ' is going'
-            time.sleep(4)
-            for j in range(1, 5):
-                rows = sharesCrawl(shareCode,i,j)
-                print rows
-                for row in rows:
-                    csvRow = []
-                    # 判断是否有数据
-                    if row.findAll('td') != []:
-                        for cell in row.findAll('td'):
-                            csvRow.append(cell.get_text().replace(',',''))
-                        if csvRow != []:
-                            writer.writerow(csvRow)
-                time.sleep(3)
-                print str(i) + '年' + str(j) + '季度is done'
-    except:
-        print '----- 爬虫出错了！没有进入循环-----'
-    finally:
+     
+    time.sleep(3)
+
+
+    for i in range(beginYear, endYear + 1):
+        print str(i) + ' is going'
+        time.sleep(4)
+        for j in range(1, 5):
+            rows = sharesCrawl(shareCode,i,j)
+            print rows
+            for row in rows:
+                csvRow = []
+               # 判断是否有数据
+                if row.findAll('td') != []:
+                    for cell in row.findAll('td'):
+                        csvRow.append(cell.get_text().replace(',',''))
+                    if csvRow != []:
+                        writer.writerow(csvRow)
+            time.sleep(3)
+            print str(i) + '年' + str(j) + '季度is done'
+
         csvFile.close()
 
 """
