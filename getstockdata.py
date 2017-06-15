@@ -61,7 +61,7 @@ def writeCSV(shareCode,beginYear,endYear):
     endYear = int (endYear)
     shareCodeStr = str(shareCode)
 
-    csvFile = open('/home/ubuntu/Jianing/stock/' + shareCodeStr + '.csv', 'wb')
+    csvFile = open('/home/ubuntu/Jianing/stock/data/' + shareCodeStr + '.csv', 'wb')
     writer = csv.writer(csvFile)
     writer.writerow(('日期','开盘价','最高价','最低价','收盘价','涨跌额','涨跌幅','成交量','成交金额','振幅','换手率'))
      
@@ -73,7 +73,6 @@ def writeCSV(shareCode,beginYear,endYear):
         time.sleep(4)
         for j in range(1, 5):
             rows = sharesCrawl(shareCode,i,j)
-            print rows
             for row in rows:
                 csvRow = []
                # 判断是否有数据
@@ -85,7 +84,7 @@ def writeCSV(shareCode,beginYear,endYear):
             time.sleep(3)
             print str(i) + '年' + str(j) + '季度is done'
 
-        csvFile.close()
+    csvFile.close()
 
 """
 try: 
